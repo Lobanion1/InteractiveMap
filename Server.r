@@ -16,7 +16,7 @@ function(input, output) {
   
   
   map = leaflet() %>% 
-    addTiles('http://{s}.tile.thunderforest.com/transport/{z}/{x}/{y}.png')%>% 
+    addTiles('http://{s}.tile.stamen.com/toner-lite/{z}/{x}/{y}.png')%>% 
     addCircleMarkers(
       FACILITY_CHAIN$lon,
       FACILITY_CHAIN$lat,
