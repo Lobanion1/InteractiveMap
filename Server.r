@@ -4,9 +4,11 @@ library(dplyr)
 library(xlsx)
 library(shiny)
 
-Colorpallet <- c("1"="#595490","3"="#527525","6"="#A93F35","7"="#BA48AA","8"="Blue")
+#East Coast:  Colorpallet <- c("CHVALUE.CT"="#595490","CHESTNU.NY"="#548b90","LONDOND.NH"="#905954","POMPTON.NJ"="#8b9054","EASTGRE.RI"="#6d9054","MARLBOR.MA"="#549059","ROCHEST.NY"="#905954","MIDDLET.NY"="#90548b")
+#Cincinnati:  Colorpallet <- c("3"="#595490","6"="#548b90","1"="#905954","8"="#8b9054","7"="#6d9054")
+Colorpallet <- c("3"="#595490","6"="#548b90","1"="#905954","8"="#8b9054","7"="#6d9054")
 
-FACILITY_CHAIN <- read.csv("L:/Cincinnati Routing Study/FACILITY_CHAINNCAv2.csv",header = TRUE)
+FACILITY_CHAIN <- read.csv("./Files/FACILITY_CHAINCINGEO.csv",header = TRUE)
 ##Subset the import to only show wanted columns
 FACILITY_CHAIN_TABLE <- FACILITY_CHAIN[ ,c("FACILITY_ID","FACILITY_NAME","ADDR1","CITY","STATE","TOTAL_BEDS","FACILITY_TYPE_GROUP")]
 
@@ -14,6 +16,8 @@ FACILITY_CHAIN_TABLE <- FACILITY_CHAIN[ ,c("FACILITY_ID","FACILITY_NAME","ADDR1"
 function(input, output) {
   
   #Function to create color option
+  #East Coast: dirPal<- colorFactor(Colorpallet,FACILITY_CHAIN$PHARMACY_ID)
+  #Cincinnati: dirPal<- colorFactor(Colorpallet,FACILITY_CHAIN$COMPANY_ID_PRIMARY)
   dirPal<- colorFactor(Colorpallet,FACILITY_CHAIN$COMPANY_ID_PRIMARY)
   
   output$contents <- renderTable({
@@ -24,7 +28,7 @@ function(input, output) {
     
     read.csv(inFile$datapath, header=input$header, sep=input$sep, 
              quote=input$quote)
-    FACILITY_CHAIN <- inFile
+#    FACILITY_CHAIN <- inFile
     })
   
   map = leaflet() %>% 
@@ -32,6 +36,8 @@ function(input, output) {
     addCircleMarkers(
       FACILITY_CHAIN$lon,
       FACILITY_CHAIN$lat,
+      #East Coast:  color = dirPal(FACILITY_CHAIN$PHARMACY_ID),
+      #Cincinnati:  color = dirPal(FACILITY_CHAIN$COMPANY_ID_PRIMARY),
       color = dirPal(FACILITY_CHAIN$COMPANY_ID_PRIMARY),
       radius = 4,
    
